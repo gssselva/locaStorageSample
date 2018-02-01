@@ -1,10 +1,16 @@
 angular.module('app').controller('app_logincool', app_logincool);
-function app_logincool($scope, app, $q) {
+function app_logincool($scope, app, $q, $localStorage, $sessionStorage) {
     'use strict';
-    app.init($scope);
-    if (!$scope.data) {
-        $scope.data = {};
-    }
+    app.init($scope, function() {
+        $scope.$storage = $localStorage.$default({
+            counter: 42
+        });
+        $scope.data.Counter = $scope.$storage.counter;
+    });
+     $scope.countUp = function($localStorage, $sessionStorage) {
+        $scope.$storage.counter = $scope.$storage.counter + 1;
+        $scope.data.Counter = $scope.$storage.counter;
+    };
     var checkSupport = function () {
         var deferred = $q.defer();
         if (typeof cordova !== 'undefined' && window.plugins && window.plugins.touchid) {
